@@ -1,0 +1,36 @@
+Bob
+Cats
+1
+Suelyn
+Harry Potter
+1
+Carlos
+Animal Farm
+1
+Kalid
+Watership Down
+3
+Carlos
+1984
+-5
+Bob
+Harry Potter
+-3
+Suelyn
+1984
+1
+Carlos
+Harry Potter
+3
+Suelyn
+Animal Farm
+-3
+Bob
+The Hobbit
+1
+Kalid
+Animal Farm
+-3
+Kalid
+Harry Potter
+1
