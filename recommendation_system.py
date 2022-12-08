@@ -41,7 +41,7 @@ def construct_ratings():
         for j in range(0, len(list_from_file)):
             if i == list_from_file[j]:
                 index = book_list.index(list_from_file[j+1])
-                current_arr[index] = list_from_file[j+2]
+                current_arr[index] = int(list_from_file[j+2])
         user_rating_dict[i] = current_arr
         
     return book_list,user_rating_dict
@@ -60,33 +60,24 @@ def averages(books:list, ratings:dict):
     return list_of_avgs
 
 def similarities(user:str, ratings:dict):
-    user = user.capitalize()
-    user1 = ratings.pop(user)
-    user_ratings = [int(j) for j in user1]
-    similarity_list = []
-    print(user_ratings)
-
     def dot_product(list1, list2):
-        product = 0
-        if len(list1) > len(list2):
-            for i in range(0,len(list2)):
-                temp = list1[i] * list2[i]
-                product += temp
-            return product
-        else:
-            for i in range(0,len(list1)):
-                temp = list1[i] * list2[i]
-                product += temp
-            return product
+        total = 0
+        for i in range(0,len(list1)):
+            total += (list1[i] * list2[i])
+        return total
+    #List with reviews from the user we're comparing the others to
+    user_to_be_checked = ratings.pop(user)
 
-    for i in ratings:
-        list_to_multiply = [int(j) for j in ratings[i]]
-        print(list_to_multiply)
-        print(dot_product(list_to_multiply, user_ratings))  
+    list_of_similar_scores = []
 
+    for user in ratings:
+        dot_p = dot_product(user_to_be_checked, ratings[user])
+        list_of_similar_scores.append(tuple([dot_p, user]))
+
+    return list_of_similar_scores        
 
 
 
 books, ratings = construct_ratings()
 averages(books, ratings)
-#similarities('kalid',ratings)
+similarities('Kalid',ratings)
