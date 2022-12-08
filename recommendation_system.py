@@ -36,8 +36,6 @@ def construct_ratings():
             array.append(0)
         return array
 
-    #print(user_rating_dict)
-
     for i in user_rating_dict:
         current_arr = create_array(len(book_list))
         for j in range(0, len(list_from_file)):
@@ -45,43 +43,21 @@ def construct_ratings():
                 index = book_list.index(list_from_file[j+1])
                 current_arr[index] = list_from_file[j+2]
         user_rating_dict[i] = current_arr
-    
-    print(user_rating_dict)
-    
+        
     return book_list,user_rating_dict
 
-def averages(books:set, ratings:dict):
-    list_from_file = []
-    book_rating_dict = {}
-    
-    for i in books:
-        book_rating_dict[i] = []
-
-    with open('test.txt', 'r') as f:
-        for line in f:
-            list_from_file.append(line.rstrip())
-        for i in book_rating_dict:
-            ratings_for_current_book = []
-            for j in range(0, len(list_from_file)):
-                if i == list_from_file[j]:
-                    ratings_for_current_book.append(int(list_from_file[j+1]))
-            book_rating_dict[i] = ratings_for_current_book
-    
-    #print(book_rating_dict)
-    ratings_list = []
-
-    for i in book_rating_dict.keys():
-        pos_count = 0
-        current_tuple = []
-        for j in book_rating_dict[i]:
-            if int(j) > 0:
-                pos_count += 1
-        current_tuple.append(sum((book_rating_dict[i]))/pos_count)
-        current_tuple.append(i)
-        current_tuple = tuple(current_tuple)
-        ratings_list.append(current_tuple)
-    ratings_list.sort(reverse=True)
-    return ratings_list
+def averages(books:list, ratings:dict):
+    list_of_avgs = []
+    for i in range(0, len(books)):
+        running_tally = 0
+        num_items = 0
+        for user in ratings:
+            running_tally += int(ratings[user][i])
+            if ratings[user][i] != 0:
+                num_items += 1
+        list_of_avgs.append(tuple([running_tally/num_items, books[i]]))
+    list_of_avgs.sort(reverse=True)
+    return list_of_avgs
 
 def similarities(user:str, ratings:dict):
     user = user.capitalize()
@@ -112,5 +88,5 @@ def similarities(user:str, ratings:dict):
 
 
 books, ratings = construct_ratings()
-#averages(books, ratings)
+averages(books, ratings)
 #similarities('kalid',ratings)
