@@ -74,10 +74,47 @@ def similarities(user:str, ratings:dict):
         dot_p = dot_product(user_to_be_checked, ratings[user])
         list_of_similar_scores.append(tuple([dot_p, user]))
 
+    list_of_similar_scores.sort(reverse=True)
+    print(list_of_similar_scores)
     return list_of_similar_scores        
+
+def recommended(sims:list,books:list,ratings:dict) -> list:
+    books_to_rec_ratings = []
+    for i in range(0,len(books)):
+        books_to_rec_ratings.append(0)
+    def create_averages(list1:list, list2:list, list3:list):
+        averages_list = []
+        non_zero_count = 0
+        for i in range(0,len(list1)):
+            if(list1[i] != 0):
+                non_zero_count += 1
+            if(list2[i] != 0):
+                non_zero_count += 1
+            if(list3[i] != 0):
+                non_zero_count += 1
+            if(non_zero_count != 0):
+                averages_list.append((list1[i] + list2[i] + list3[i]) / non_zero_count)
+            else:
+                averages_list.append(0)
+            non_zero_count = 0
+        return averages_list
+    name1 = sims[0][1]
+    name2 = sims[1][1]
+    name3 = sims[2][1]
+    list1 = ratings.pop(name1)
+    list2 = ratings.pop(name2)
+    list3 = ratings.pop(name3)
+    average_list_vals = create_averages(list1, list2, list3)
+    print(average_list_vals)
+    average_list_vals_and_names = []
+    for i in range(0, len(average_list_vals)):
+        average_list_vals_and_names.append(tuple([average_list_vals[i], books[i]]))
+    average_list_vals_and_names.sort(reverse=True)
+    print(average_list_vals_and_names)
 
 
 
 books, ratings = construct_ratings()
 averages(books, ratings)
-similarities('Kalid',ratings)
+sims = similarities('Kalid',ratings)
+recommended(sims,books,ratings)
